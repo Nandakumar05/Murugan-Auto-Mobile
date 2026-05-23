@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Murugan Auto Mobile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            padding: 40px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #222;
+            font-size: 28px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-grid {
+   			display: grid;
+    		
+    		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    		gap: 20px;
+}
+
+        input {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table-card {
+    		overflow-x: auto;
+}
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .edit-btn {
+            text-decoration: none;
+            background: orange;
+            color: white;
+            padding: 8px 12px;
+             border-radius: 6px;
+            margin-right: 8px;
+        }
+
+        .delete-btn {
+            text-decoration: none;
+            background: crimson;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h2 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        @media(max-width: 768px) {
+        
+        .btn,
+		.edit-btn,
+		.delete-btn {
+    		display: inline-block;
+   			margin-top: 5px;
+    		padding: 10px;
+    		font-size: 14px;
+			}
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 class="title">
+        Murugan Auto Mobile 
+    </h1>
+    
+    <div class="stats">
+
+        <div class="stat-card">
+            <h2>Total Parts</h2>
+            <p th:text="${#lists.size(parts)}"></p>
+        </div>
+
+        <div class="stat-card">
+            <h2>Inventory System</h2>
+            <p>Spring Boot + MySQL</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>Status</h2>
+            <p>Active</p>
+        </div>
+
+    </div>
+    
+    <div class="form-card">
+
+        <form action="/save" method="post">
+
+            <div class="form-grid">
+
+                <input type="text"
+                       name="bikeCompany"
+                       placeholder="Bike Company">
+
+                <input type="text"
+                       name="bikeName"
+                       placeholder="Bike Name">
+                       
+                <input type="text"
+       					name="rackNumber"
+       					placeholder="Rack Number">
+
+                <input type="text"
+                       name="partName"
+                       placeholder="Part Name">
+
+                <input type="number"
+                       name="price"
+                       placeholder="Price">
+                
+                <input type="number"
+                       name="quantity"
+                       placeholder="Quantity">
+
+            </div>
+
+            <button class="btn" type="submit">
+                Save Part
+            </button>
+
+        </form>
+
+    </div>
+    
+ 
+    
+  <div class="table-card">
+
+    <h2>Available Parts</h2>
+
+    <br>
+
+    <input type="text"
+           id="searchInput"
+           class="search-box"
+           placeholder="Search parts..."
+           onkeyup="searchTable()"
+           style="
+               width: 300px;
+               padding: 10px;
+               margin-bottom: 20px;
+               border-radius: 8px;
+               border: 1px solid #ccc;
+           ">
+
+    <table id="partsTable">
+
+        <tr>
+            <th>ID</th>
+            <th>Bike Company</th>
+            <th>Bike Name</th>
+            <th>Rack No</th>
+            <th>Part Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+
+        <tr th:each="p : ${parts}">
+
+            <td th:text="${p.id}"></td>
+
+            <td th:text="${p.bikeCompany}"></td>
+
+            <td th:text="${p.bikeName}"></td>
+            
+            <td th:text="${p.rackNumber}"></td>
+
+            <td th:text="${p.partName}"></td>
+
+            <td th:text="${p.price}"></td>
+
+            <td th:text="${p.quantity}"></td>
+
+            <td>
+
+                <a class="edit-btn"
+                   th:href="@{/edit/{id}(id=${p.id})}">
+                    Edit
+                </a>
+
+                <a class="delete-btn"
+                   th:href="@{/delete/{id}(id=${p.id})}">
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+<script>
+
+function searchTable() {
+
+    let input =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    let table =
+        document.getElementById("partsTable");
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].textContent.toLowerCase();
+
+        if (rowText.includes(input)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

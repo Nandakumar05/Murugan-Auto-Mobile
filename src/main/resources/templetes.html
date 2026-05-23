@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Auto Shop Inventory</title>
+</head>
+
+<body>
+
+<h1>Auto Spare Parts</h1>
+
+<form action="/add" method="post">
+
+    <input type="text" name="partName" placeholder="Part Name">
+    <br><br>
+
+    <input type="text" name="partNumber" placeholder="Part Number">
+    <br><br>
+
+    <input type="text" name="vehicleType" placeholder="Vehicle Type">
+    <br><br>
+
+    <input type="number" name="quantity" placeholder="Quantity">
+    <br><br>
+
+    <input type="number" step="0.01" name="price" placeholder="Price">
+    <br><br>
+
+    <button type="submit">Save</button>
+
+</form>
+
+<hr>
+
+<h2>Parts List</h2>
+
+<table border="1">
+
+<tr>
+    <th>ID</th>
+    <th>Part Name</th>
+    <th>Part Number</th>
+    <th>Vehicle Type</th>
+    <th>Quantity</th>
+    <th>Price</th>
+</tr>
+
+<tr th:each="part : ${parts}">
+    <td th:text="${part.id}"></td>
+    <td th:text="${part.partName}"></td>
+    <td th:text="${part.partNumber}"></td>
+    <td th:text="${part.vehicleType}"></td>
+    <td th:text="${part.quantity}"></td>
+    <td th:text="${part.price}"></td>
+</tr>
+
+</table>
+
+</body>
+</html>
